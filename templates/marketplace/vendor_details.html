@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{vendor.vendor_name}}{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section">
+  {% if vendor.user_profile.cover_photo %} 
+  <div
+    class="page-section restaurant-detail-image-section"
+    style="background: url('{{vendor.user_profile.cover_photo.url}}') no-repeat scroll 0 0 / cover;"
+  >
+  {% else %}
+  <div
+    class="page-section restaurant-detail-image-section"
+    style="background: url('{% static "images/default-cover-photo.jpg" %}') no-repeat scroll 0 0 / cover;"
+  >
+  {% endif %}
+    <!-- Container Start -->
+    <div class="container">
+      <!-- Row Start -->
+      <div class="row">
+        <!-- Column Start -->
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="company-info-detail">
+            <div class="company-info">
+              <div class="img-holder">
+                <figure>
+                  {% if vendor.user_profile.profile_photo %}
+                  <img src="{{vendor.user_profile.profile_photo.url}}" alt="" />
+                  {% else %}
+                  <img src="{% static "images/vendor-default-profile-photo.png" %}" alt="" />
+                  {% endif %}
+                </figure>
+              </div>
+              <div class="text-holder">
+                <span class="restaurant-title">{{vendor.vendor_name}}{% if not vendor.is_open %}<span class="badge badge-danger ml-3">Closed</span>{% endif %}</span>
+                <div class="text">
+                {% if vendor.user_profile.address %}
+                <i class="icon-location"></i>
+                <p>{{vendor.user_profile.address}}</p>
+                {% endif %}
+                </div>
+                <div class="text">
+                  {% if vendor.user.phone_number %}
+                  <i class="icon-phone"></i>
+                  <p>{{vendor.user.phone_number}}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+            {% if opening_hours %}
+            <div class="delivery-timing reviews-sortby">
+              <ul>
+                <li>
+                  <a href="#" class="reviews-sortby-active">
+                    <span>Today :</span>
+                    {% for today in current_opening_hours %}
+                    {% if today.is_closed %}Closed {% else %}{{today.from_hour}} - {{today.to_hour}}{% endif %}
+                    <i class="icon-chevron-small-down"></i>
+                    {% endfor %}
+                  </a>
+                  <ul class="delivery-dropdown">
+                    {% for hour in opening_hours %}
+                    <li>
+                      <a href="#"
+                        ><span class="opend-day">{{hour}}</span>
+                        <span class="opend-time"
+                          ><small>:</small> {% if hour.is_closed %}Closed {% else %} {{hour.from_hour}} - {{hour.to_hour}}{% endif %}</span
+                        ></a
+                      >
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <!-- Column End -->
+      </div>
+      <!-- Row End -->
+    </div>
+    <!-- Container End -->
+  </div>
+
+  <div class="page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 sticky-sidebar">
+          <div class="filter-toggle">
+            <span class="filter-toggle-text">Categories By</span
+            ><i class="icon-chevron-down"></i>
+          </div>
+          <div class="filter-wrapper">
+            <div class="categories-menu">
+              <h6><i class="icon-restaurant_menu"></i>Categories</h6>
+              <ul class="menu-list">
+                {% for category in categories %}
+                <li class="active">
+                  <a href="#{{category.slug}}" class="menu-category-link"> {{category.category_name}} </a>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+          <div class="tabs-holder horizontal">
+            <ul class="stickynav-tabs nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab"
+                  ><i class="icon- icon-room_service"></i>Menu</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane in active">
+                <div class="menu-itam-holder">
+                  <div id="menu-item-list-6272" class="menu-itam-list">
+                    {% for category in categories %}
+                    <div class="element-title" id="{{category.slug}}">
+                      <h5 class="text-color">{{category.category_name}}</h5>
+                      <span
+                        >{{category.description}}</span
+                      >
+                    </div>
+                    <ul>
+                      {% for food in category.foods.all %}
+                      <li>
+                        <div class="image-holder">
+                          <a
+                            href="{{food.image.url}}"
+                            ><img
+                              id="food-img"
+                              src="{{food.image.url}}"
+                              alt=""
+                          /></a>
+                        </div>
+                        <div class="text-holder">
+                          <h6>{{food.food_name}}</h6>
+                          <span
+                            >{{food.description}}</span
+                          >
+                        </div>
+                        <div class="price-holder">
+                          <span class="price">${{food.price}}</span>
+                          <a href="" class="minus_from_cart" data-id="{{food.id}}" data-url="{% url "minus_from_cart" food.id %}"
+                            ><i class="icon-minus3 text-color"></i
+                          ></a>
+                          <label id="qty-{{food.id}}">0</label>
+                          <a href="" class="add_to_cart" data-id="{{food.id}}" data-url="{% url "add_to_cart" food.id %}"
+                            ><i class="icon-plus4 text-color"></i
+                          ></a>
+                        </div>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                    {% endfor %}
+                  </div>
+                  {% for item in cart_items %}
+                    <span id="qty-{{item.food.id}}" class="item_qty d-none" data-qty="{{item.quantity}}">{{item.quantity}}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

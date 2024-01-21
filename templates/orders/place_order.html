@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Place Order{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section mt-5">
+  <div class="page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+          <div class="tabs-holder horizontal">
+            <ul class="stickynav-tabs nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab"
+                  ><i class="fa-solid fa-map-location-dot mr-2"></i>Review Billing Address</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane in active">
+                <div class="menu-itam-holder">
+                  <div class="py-3">
+                    <div><b>Name : </b>{{order.name}}</div>
+                    <div><b>Email address : </b>{{order.email}}</div>
+                    <div><b>Phone number : </b>{{order.phone_number}}</div>
+                    <div><b>Address : </b>{{order.address}}</div>
+                    <div><b>City : </b>{{order.city}}</div>
+                    <div><b>Pin code : </b>{{order.pin_code}}</div>
+                    <div><b>State : </b>{{order.state}}</div>
+                    <div><b>Country : </b>{{order.country}}</div>
+                    <a href="{% url "checkout" %}" class="custom-btn my-3">Edit</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+          <div class="tabs-holder horizontal">
+            <ul class="stickynav-tabs nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab"
+                  ><i class="fa-solid fa-wallet mr-2"></i>Your Orders</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane in active">
+                <div class="menu-itam-holder">
+                  <table id="cart_table" class="table table-borderless">
+                     {% if cart_items %}
+                      <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                          <td>
+                            <img id="food-img" src="{{item.food.image.url}}" alt="" width="50px">
+                          </td>
+                          <td>
+                            <div class="mb-1">
+                              {{item.food.food_name}}
+                            </div>
+                            <a href="{% url "vendor_details" item.food.vendor.vendor_slug %}" class="badge badge-info">{{item.food.vendor}}<a/>
+                          </td>
+                          <td>Qty: {{item.quantity}}</td>
+                          <td>$ {{item.food.price}}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    {% endif %}
+                  <div>
+                    <ul>
+                      <li class="list-unstyled">
+                        Subtotal
+                        <span class="price float-right">
+                          <span class="currency">$</span>
+                          <span id="subtotal">{{subtotal}}</span>
+                        </span>
+                      </li>
+                      {% for key, value in tax_dict.items %}
+                        {% for i, j in value.items %}
+                          <li class="list-unstyled">
+                            {{key}} <small>({{i}} %)</small>
+                            <span class="price float-right">
+                              <span class="currency">$</span>
+                              <span id="tax-{{key}}">{{j}}</span>
+                            </span>
+                          </li>
+                        {% endfor %}
+                      {% endfor %}
+                        <li class="list-unstyled">
+                          <span class="font-weight-bold">Grand Total</span>
+                          <span class="price float-right">
+                            <span class="currency">$</span>
+                            <span id="total">{{grand_total}}</span>
+                          </span>
+                        </li>
+                        <form action="{% url "payment" %}">
+                          <input type="hidden" name="order_number" value="{{order.order_number}}">
+                          <button type="submit" class="stripe-btn w-100 my-4"><em>Pay with</em> <i class="fa-brands fa-cc-stripe"></i></button>
+                        </form>
+                    </ul>
+                    </form> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

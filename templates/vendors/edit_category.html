@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Edit Category{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section">
+  {% include "includes/vendor_cover.html" %}
+  <div class="page-section account-header buyer-logged-in">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+          {% include "includes/vendor_sidebar.html" %}
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+          <div class="user-dashboard loader-holder">
+            <div class="user-holder">
+              <div class="row align-items-center">
+                <div class="col-12 col-md-auto">
+                  <h5 class="text-uppercase">Build your menu</h5>
+                </div>
+                <div class="col-12 col-md text-md-right">
+                  <div>
+                  <a href="{% url "add_category" %}" class="custom-btn mr-2" onClick="history.back()"><i class="icon-arrow-left mr-1"></i>Back</a>
+                </div>
+                </div>
+              </div>
+              <hr/>
+              <h6 class="mb-3 mt-4">Edit category</h6>
+             <form
+                action="{% url 'edit_category' category.id %}"
+                method="POST"
+              >
+                {% csrf_token %}
+                <div class="form-fields-set">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="field-holder">
+                                <label>Category name *</label>
+                                {{category_form.category_name}}
+                            </div>
+                        </div>
+                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="field-holder">
+                                <label>Category description</label>
+                                {{category_form.description}}
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="field-holder">
+                                <div class="payment-holder input-button-loader">
+                                    <input
+                                    class="update-restaurant"
+                                    type="submit"
+                                    value="Save"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                  </div>
+                </div>
+              </form>
+              {% for field in category_form %}
+                {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

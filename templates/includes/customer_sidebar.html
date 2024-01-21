@@ -1,0 +1,31 @@
+<div class="user-account-nav user-account-sidebar">
+  <div class="user-nav-list">
+    <ul>
+      <li {% if '/customer-dashboard/' == request.path or '/customer/' == request.path %}class="active"{% endif %}>
+        <a href="{% url "customer_dashboard" %}"
+          ><i class="icon-dashboard3"></i>Dashboard</a
+        >
+      </li>
+      <li {% if '/my-orders/' in request.path or '/order-details/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "customer_my_orders" %}"
+          ><i class="icon-add_shopping_cart"></i>My Orders</a
+        >
+      </li>
+      <li {% if '/customer-profile/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "customer_profile" %}"
+          ><i class="icon-build"></i>Profile Settings</a
+        >
+      </li>
+      <li {% if '/change-password/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "customer_change_password" %}"
+          ><i class="icon-unlock-alt"></i>Change Password</a
+        >
+      </li>
+      <li>
+        <a class="logout-btn" href="{% url "logout" %}"
+          ><i class="icon-log-out"></i>Logout</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>

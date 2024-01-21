@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Marketplace{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section">
+  <div
+    class="page-section nopadding cs-nomargin"
+    style="
+      margin-top: 0px;
+      padding-top: 60px;
+      padding-bottom: 10px;
+      margin-bottom: 0px;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="row">
+            <aside class="col-lg-2 col-md-2 col-sm-12 col-xs-12"></aside>
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+              <div class="listing-sorting-holder">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>{{vendors_count}} Restaurant's found</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="listing simple">
+                <ul>
+					      {% for vendor, data in vendors_with_categories.items %}
+                  <li>
+                    <div class="img-holder">
+                      <figure>
+                        <a href="{% url "vendor_details" vendor.vendor_slug %}">
+                          {% if vendor.user_profile.profile_photo %}
+                          <img
+                            src="{{vendor.user_profile.profile_photo.url}}"
+                            class="img-list wp-post-image"
+                            alt=""
+                          />
+                          {% else %}
+                          <img
+                            src="{% static "images/vendor-default-profile-photo.png" %}"
+                            class="img-list wp-post-image"
+                            alt=""
+                          />
+                          {% endif %}
+                        </a>
+                      </figure>
+                      {% if vendor.is_open %}
+                      <span class="restaurant-status open">
+                          <em class="bookmarkRibbon"></em>Open
+                      </span>
+                      {% else %}
+                      <span class="restaurant-status close">
+                          <em class="bookmarkRibbon"></em>Closed
+                      </span>
+                      {% endif %}
+                    </div>
+                    <div class="text-holder">
+                      <div class="post-title">
+                        <h5>
+                          <a href="{% url "vendor_details" vendor.vendor_slug %}">{{vendor.vendor_name}}</a>
+                        </h5>
+                      </div>
+                      {% if data.categories %}
+                      <ul class="ven-categories">
+                      {% for category in data.categories %}
+                          <li>{{category.category_name}}</li>
+                      {% endfor %}
+                      </ul>
+                      {% endif %}
+                      {% if vendor.user_profile.address %}
+                      <address style="font-size: 12px; margin: 0; line-height: 18px;"><i class="fa-solid fa-location-dot mr-1" style="color: #c33332;"></i>{{vendor.user_profile.address}}</address>
+                      {% endif %}
+                      
+                      {% if data.distance %}
+                      <div style="color: #c33332 !important;" class="text-muted">
+                      {{ data.distance | floatformat:2}} Km Away
+                      </div>
+                      {% endif %}
+                    </div>
+                    <div class="list-option">
+                      <a href="{% url "vendor_details" vendor.vendor_slug %}" class="viewmenu-btn text-color">View Menu</a>
+                    </div>
+                  </li>
+				        {% endfor %}
+                </ul>
+              </div>
+            </div>
+            <div class="section-sidebar col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div class="message-box" style="background-color: #fa9918">
+                <strong>I'm not Listed!</strong
+                ><span
+                  >is your restaurant or business not listed on over site</span
+                >
+                <a href="{% url "vendor_reg" %}" class="request-btn">Add Your business!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

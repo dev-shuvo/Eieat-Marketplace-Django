@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Opening Hours{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section">
+  {% include "includes/vendor_cover.html" %}
+  <div class="page-section account-header buyer-logged-in">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+          {% include "includes/vendor_sidebar.html" %}
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+          <div class="user-dashboard loader-holder">
+            <div class="user-holder">
+              <h5 class="text-uppercase mb-0">Opening Hours</h5>
+              <hr/>
+              <table id="opening_hours" class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Day</th>
+                    <th scope="col">Opening Time</th>
+                    <th scope="col">Closing Time</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for hour in opening_hours %}
+                  <tr id="opening-hours-{{hour.id}}">
+                    <td>{{hour}}</td>
+                    <td>
+                      {% if hour.is_closed %}
+                      Closed
+                      {% else %}
+                      {{hour.from_hour}}
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if hour.is_closed %}
+                      Closed
+                      {% else %}
+                      {{hour.to_hour}}
+                      {% endif %}
+                    </td>
+                    <td><a class="delete_hours" data-url="{% url "delete_opening_hours" hour.id %}"  href="">Delete</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+              <hr/>
+              <h6 class="mb-3 mt-4">Add Hours</h6>
+              <form id="opening_hours_form">
+                {% csrf_token %}
+                <div class="row align-items-center">
+                  <div class="col-lg-3 mb-2">
+                    <div class="mb-2">Day:</div>
+                    {{form.day}}
+                  </div>
+                  <div class="col-lg-3 mb-2">
+                    <div class="mb-2">Opening Time:</div>
+                    {{form.from_hour}}
+                  </div>
+                  <div class="col-lg-3 mb-2">
+                    <div class="mb-2">Closing Time:</div>
+                    {{form.to_hour}}
+                  </div>
+                  <div class="col-lg-3 mb-2">
+                    <div class="mb-2">Status:</div>
+                    <div>
+                      {{form.is_closed}} <label>Set as closed</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <input id="opening_hours_url" type="hidden" value="{% url "add_opening_hours" %}"/>
+                    <button type="submit" class="custom-btn-3 add_hours mt-xl-4">Add</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

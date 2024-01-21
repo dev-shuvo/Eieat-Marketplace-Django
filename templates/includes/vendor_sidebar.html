@@ -1,0 +1,41 @@
+<div class="user-account-nav user-account-sidebar">
+  <div class="user-nav-list">
+    <ul>
+      <li {% if '/accounts/vendor-dashboard/' == request.path or '/accounts/vendor/' == request.path %}class="active"{% endif %}>
+        <a href="{% url "vendor_dashboard" %}"
+          ><i class="icon-dashboard3"></i>Dashboard</a
+        >
+      </li>
+      <li {% if '/vendor-profile/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "vendor_profile" %}"
+          ><i class="icon-building"></i>My Restaurant</a
+        >
+      </li>
+      <li {% if '/menu-builder/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "menu_builder" %}"
+          ><i class="icon-menu5"></i>Menu Builder</a
+        >
+      </li>
+      <li {% if '/opening-hours/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "opening_hours" %}"
+          ><i class="icon-time"></i>Opening Hours</a
+        >
+      </li>
+      <li {% if '/orders/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "vendor_orders" %}"
+          ><i class="icon-add_shopping_cart"></i>Orders</a
+        >
+      </li>
+      <li {% if '/change-password/' in request.path %}class="active"{% endif %}>
+        <a href="{% url "vendor_change_password" %}"
+          ><i class="icon-unlock-alt"></i>Change Password</a
+        >
+      </li>
+      <li>
+        <a class="logout-btn" href="{% url "logout" %}"
+          ><i class="icon-log-out"></i>Logout</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>

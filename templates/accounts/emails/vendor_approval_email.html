@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Hi {{user.first_name}} {{user.last_name}},
+{% if is_approved %}
+Congratulations! Your Restaurant has been approved. You can now publish your food menu on our marketplace.
+{% else %}
+We're sorry! You are not eligible for publishing your restaurant on our marketplace.
+For more details, please contact at support@eieat.com
+{% endif %}
+
+{% endautoescape %}

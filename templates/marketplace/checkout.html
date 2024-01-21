@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section mt-5">
+  <div class="page-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+          <div class="tabs-holder horizontal">
+            <ul class="stickynav-tabs nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab"
+                  ><i class="fa-solid fa-map-location-dot mr-2"></i>Billing Address</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane in active">
+                <div class="menu-itam-holder">
+                  <form
+                    id="order_form"
+                    action="{% url 'place_order' %}"
+                    method="POST"
+                  >
+                    {% csrf_token %}
+                    <div class="form-fields-set">
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>First name *</label>
+                            {{order_form.first_name}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>Last name *</label>
+                            {{order_form.last_name}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>Email Address *</label>
+                            {{order_form.email}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>Phone number *</label>
+                            {{order_form.phone_number}}
+                          </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>Address *</label>
+                            {{order_form.address}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>City *</label>
+                            {{order_form.city}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>Pincode *</label>
+                            {{order_form.pin_code}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>State *</label>
+                            {{order_form.state}}
+                          </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                          <div class="field-holder">
+                            <label>Country *</label>
+                            {{order_form.country}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+          <div class="tabs-holder horizontal">
+            <ul class="stickynav-tabs nav nav-tabs">
+              <li class="active">
+                <a data-toggle="tab"
+                  ><i class="fa-solid fa-wallet mr-2"></i>Your Orders</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane in active">
+                <div class="menu-itam-holder">
+                  <table id="cart_table" class="table table-borderless">
+                     {% if cart_items %}
+                      <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                          <td>
+                            <img id="food-img" src="{{item.food.image.url}}" alt="" width="50px">
+                          </td>
+                          <td>
+                            <div class="mb-1">
+                              {{item.food.food_name}}
+                            </div>
+                            <a href="{% url "vendor_details" item.food.vendor.vendor_slug %}" class="badge badge-info">{{item.food.vendor}}<a/>
+                          </td>
+                          <td>Qty: {{item.quantity}}</td>
+                          <td>$ {{item.food.price}}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    {% endif %}
+                  <div>
+                    <ul>
+                      <li class="list-unstyled">
+                        Subtotal
+                        <span class="price float-right">
+                          <span class="currency">$</span>
+                          <span id="subtotal">{{subtotal}}</span>
+                        </span>
+                      </li>
+                      {% for key, value in tax_dict.items %}
+                        {% for i, j in value.items %}
+                          <li class="list-unstyled">
+                            {{key}} <small>({{i}} %)</small>
+                            <span class="price float-right">
+                              <span class="currency">$</span>
+                              <span id="tax-{{key}}">{{j}}</span>
+                            </span>
+                          </li>
+                        {% endfor %}
+                      {% endfor %}
+                        <li class="list-unstyled">
+                          <span class="font-weight-bold">Grand Total</span>
+                          <span class="price float-right">
+                            <span class="currency">$</span>
+                            <span id="total">{{grand_total}}</span>
+                          </span>
+                        </li>
+                        <button type="submit" class="custom-btn w-100 my-4">Place Order</button>
+                    </ul>
+                    </form> 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}

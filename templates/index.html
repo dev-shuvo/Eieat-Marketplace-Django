@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order Food Online{% endblock title %}
+{% block content %}
+
+<!-- Main Section Start -->
+<div class="main-section">
+  <!-- Home Pages Elements Strat -->
+  <!-- Main Search Start -->
+  <div
+    class="page-section nopadding cs-nomargin"
+    style="
+      padding-top: 200px;
+      padding-bottom: 150px;
+      margin-bottom: 0px;
+      background: url({% static "images/home-banner.jpg" %}) no-repeat center /
+        cover;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title">
+            <h1
+              style="
+                font-size: 40px;
+                color: #ffffff !important;
+                text-transform: uppercase;
+                line-height: 50px;
+                margin-bottom: 25px;
+                text-align: center;
+              "
+            >
+              We are in the business of food<br />our restaurants do
+            </h1>
+            <p
+              style="
+                font-size: 18px;
+                letter-spacing: 1px;
+                color: #ffffff !important;
+                text-align: center;
+              "
+            >
+              Ridiculus sociosqu cursus neque cursus curae ante scelerisque
+              vehicula.
+            </p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="main-search fancy bg-holder">
+            <form action="{% url "search" %}" method="GET" id="search_form">
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <span class="foodbakery-search-location-icon"
+                            ><i class="icon-home3"></i
+                          ></span>
+                    <input type="text" placeholder="Resturant or Food name" name="keyword" />
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <ul>
+                      <li class="select-location">
+                        <div
+                          class="foodbakery-locations-fields-group foodbakery-focus-out"
+                        >
+                          <span class="foodbakery-search-location-icon"
+                            ><i class="icon-location"></i
+                          ></span>
+                          <input
+                            id="id_address"
+                            type="text"
+                            class="location-field-text filter"
+                            placeholder="Location"
+                            required
+                            name="address"
+                          />
+                          <input type="hidden" name="lat" id="id_latitude" value=""/>
+                          <input type="hidden" name="lon" id="id_longitude" value=""/>
+                          <div id="autocomplete-suggestions"></div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <span class="foodbakery-search-location-icon"
+                            ><i class="fa-solid fa-location-arrow"></i></span>
+                    <select class="text-uppercase" name="radius" autocomplete="off" required>
+                      <option selected>Choose Radius</option>
+                      <option value="5">5 km</option>
+                      <option value="10">10 km</option>
+                      <option value="20">20 km</option>
+                      <option value="50">50 km</option>
+                      <option value="75">75 km</option>
+                      <option value="100">100 km</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="padding-right: 0;">
+                  <div class="field-holder">
+                    <input type="submit" value="Search" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Main Search End -->
+
+  <!-- Top Restarurants Section Start -->
+  <div
+    class="page-section nopadding cs-nomargin"
+    style="
+      margin-top: 0px;
+      padding-top: 60px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+      background: #ffffff;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-left">
+            <h2>Top Restaurants</h2>
+            <p>Explore restaurants, bars, and cafés by locality</p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="company-logo">
+            <ul>
+              {% for vendor in top_vendors %}
+              <li class="has-border">
+                <figure>
+                  <a href="{% url "vendor_details" vendor.vendor_slug %}"
+                    >
+                  {% if vendor.user_profile.profile_photo %}
+                  <img
+                      src="{{vendor.user_profile.profile_photo.url}}"
+                      class="attachment-full size-full wp-post-image"
+                      alt=""
+                  />
+                  {% else %}
+                  <img
+                      src="{% static "images/vendor-default-profile-photo.png" %}"
+                      class="attachment-full size-full wp-post-image"
+                      alt=""
+                  />
+                  {% endif %}
+                  </a>
+                </figure>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Top Restarurants Section End -->
+  <!-- Choose From Most Popular Listin Start -->
+  <div
+    class="page-section nopadding cs-nomargin"
+    style="
+      margin-top: 0px;
+      padding-top: 60px;
+      padding-bottom: 50px;
+      margin-bottom: 0px;
+      background: #ffffff;
+    "
+  >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="element-title align-center">
+            <h2>Choose From New Restaurants</h2>
+            <p>Felis portaest nisl arcu sit sollicitudin leo maximus euismod mi.</p>
+          </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="listing fancy">
+            <ul class="row">
+              {% for vendor, categories in vendors.items %}
+              <li class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="list-post featured">
+                  <div class="img-holder">
+                    <figure>
+                      <a href="{% url "vendor_details" vendor.vendor_slug %}"
+                        >
+                      {% if vendor.user_profile.profile_photo %}
+                      <img
+                          src="{{vendor.user_profile.profile_photo.url}}"
+                          class="attachment-full size-full wp-post-image"
+                          alt=""
+                      />
+                      {% else %}
+                      <img
+                          src="{% static "images/vendor-default-profile-photo.png" %}"
+                          class="attachment-full size-full wp-post-image"
+                          alt=""
+                      />
+                      {% endif %}
+                      </a>
+                    </figure>
+                    {% if vendor.is_open %}
+                    <span class="restaurant-status open">
+                        <em class="bookmarkRibbon"></em>Open
+                    </span>
+                    {% else %}
+                    <span class="restaurant-status close">
+                        <em class="bookmarkRibbon"></em>Closed
+                    </span>
+                    {% endif %}
+                  </div>
+                  <div class="text-holder">
+                    <div class="post-title">
+                      <h5>
+                        <a href="{% url "vendor_details" vendor.vendor_slug %}">{{vendor.vendor_name}}</a>
+                      </h5>
+                    </div>
+                    {% if categories %}
+                    <ul class="ven-categories">
+                    {% for category in categories %}
+                        <li>{{category.category_name}}</li>
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
+                  </div>
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Choose From Most Popular Listing End -->
+
+  <!-- Home Pages Elements End  -->
+</div>
+<!-- Main Section End -->
+{% endblock content %}

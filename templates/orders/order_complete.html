@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Order Complete{% endblock title %}
+{% block content %}
+<!-- Main Section Start -->
+<div class="main-section my-5">
+  <div class="page-section">
+    <div class="container">
+      <div class="order-complete">
+        <h3>Thank you for your order</h3>
+        <div>
+          <div><b>Name : </b>{{order.name}}</div>
+          <div><b>Email address : </b>{{order.email}}</div>
+          <div><b>Phone number : </b>{{order.phone_number}}</div>
+          <div><b>Address : </b>{{order.address}}</div>
+          <div><b>Order number : </b>{{order.order_number}}</div>
+          <div><b>Transaction ID : </b>{{transaction_id}}</div>
+          <div><b>Order date : </b>{{order.created_at}}</div>
+          <div><b>Status : </b>{{order.payment.status}}</div>
+        </div>
+        <h5 class="mt-4">Your Orders</h5>
+          <table class="table">
+            <tbody>
+              {% for item in ordered_foods %}
+              <tr>
+                <td>
+                  <img id="food-img" src="{{item.food.image.url}}" width="50px" alt="">
+                </td>
+                <td>
+                  <div class="mb-1">
+                    {{item.food.food_name}}
+                  </div>
+                  <a href="{% url "vendor_details" item.food.vendor.vendor_slug %}" class="badge badge-info">{{item.food.vendor}}<a/>
+                </td>
+                <td>{{item.quantity}}</td>
+                <td>$ {{item.amount}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="amount">
+            <ul>
+              <li class="list-unstyled">
+                Subtotal
+                <span class="price float-right">
+                  <span class="currency">$</span>
+                  <span id="subtotal">{{subtotal}}</span>
+                </span>
+              </li>
+              {% for key, value in tax_dict.items %}
+                {% for i, j in value.items %}
+                  <li class="list-unstyled">
+                    {{key}} <small>({{i}} %)</small>
+                    <span class="price float-right">
+                      <span class="currency">$</span>
+                      <span id="tax-{{key}}">{{j}}</span>
+                    </span>
+                  </li>
+                {% endfor %}
+              {% endfor %}
+              <li class="list-unstyled">
+                <span class="font-weight-bold">Grand Total</span>
+                <span class="price float-right">
+                  <span class="currency">$</span>
+                  <span id="total">{{order.total}}</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Main Section End -->
+{% endblock content %}
